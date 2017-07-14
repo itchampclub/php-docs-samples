@@ -26,13 +26,16 @@ use Symfony\Component\Console\Input\InputDefinition;
 
 $application = new Application('Cloud DLP');
 
-// $inputDefinition = new InputDefinition([
-//     // c
-// ]);
-
 $application->add(new Command('inspect-string'))
-    // ->setDefinition($inputDefinition)
     ->addArgument('string', InputArgument::REQUIRED, 'The string to inspect')
+    ->setDescription('Inspect a string using the Data Loss Prevention (DLP) API.')
+    ->setCode(function ($input, $output) {
+        inspect_string(
+            $input->getArgument('string')
+        );
+    });
+
+$application->add(new Command('list-info-types'))
     ->setDescription('Inspect a string using the Data Loss Prevention (DLP) API.')
     ->setCode(function ($input, $output) {
         inspect_string(
