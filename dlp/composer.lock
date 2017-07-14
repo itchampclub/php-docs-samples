@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "459ce0a17014e81b953148a9a997dc57",
+    "content-hash": "23c4e23017e68d9b7352b4fc1a90e276",
     "packages": [
         {
             "name": "firebase/php-jwt",
@@ -866,46 +866,6 @@
                 "instantiate"
             ],
             "time": "2015-06-14T21:17:01+00:00"
-        },
-        {
-            "name": "google/cloud-videointelligence",
-            "version": "v0.3.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/GoogleCloudPlatform/google-cloud-php-videointelligence.git",
-                "reference": "0c2a983db8ec2ca4cc3ef30467d55bcefb16c8b6"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/GoogleCloudPlatform/google-cloud-php-videointelligence/zipball/0c2a983db8ec2ca4cc3ef30467d55bcefb16c8b6",
-                "reference": "0c2a983db8ec2ca4cc3ef30467d55bcefb16c8b6",
-                "shasum": ""
-            },
-            "require": {
-                "ext-grpc": "*",
-                "google/gax": "^0.21.0",
-                "google/proto-client": "^0.21.0"
-            },
-            "type": "library",
-            "extra": {
-                "component": {
-                    "id": "cloud-videointelligence",
-                    "target": "GoogleCloudPlatform/google-cloud-php-videointelligence.git",
-                    "path": "src/VideoIntelligence",
-                    "entry": null
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Google\\Cloud\\VideoIntelligence\\": ""
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "Apache-2.0"
-            ],
-            "description": "Cloud Video Intelligence Client for PHP",
-            "time": "2017-07-12T00:04:55+00:00"
         },
         {
             "name": "phpdocumentor/reflection-common",

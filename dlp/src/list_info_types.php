@@ -27,53 +27,23 @@ use Google\Privacy\Dlp\V2beta1\Likelihood;
 /**
  * Finds shot changes in the video.
  *
- * @param string $uri The cloud storage object to analyze. Must be formatted
- *                    like gs://bucketname/objectname
+ * @param string $category Optional category for the Info Types, empty for all.
+ * @param string $languageCode Optional language code, empty for 'en-US'.
  */
-function list_info_types(
-    $string,
-    $minLikelihood = likelihood::LIKELIHOOD_UNSPECIFIED,
-    $maxFindings = 0)
+function list_info_types($category = '', $languageCode = '')
 {
     // Instantiate a client.
     $dlp = new DlpServiceClient();
 
-    // The infoTypes of information to match
-    $usMaleNameInfoType = new InfoType();
-    $usMaleNameInfoType->setName('US_MALE_NAME');
-    $usFemaleNameInfoType = new InfoType();
-    $usFemaleNameInfoType->setName('US_FEMALE_NAME');
-    $infoTypes = [$usMaleNameInfoType, $usFemaleNameInfoType];
-
-    // Whether to include the matching string
-    $includeQuote = true;
-
-    // Create the configuration object
-    $inspectConfig = new InspectConfig();
-    // $inspectConfig->setMinLikelihood($minLikelihood);
-    $inspectConfig->setMaxFindings($maxFindings);
-    $inspectConfig->setInfoTypes($infoTypes);
-    $inspectConfig->setIncludeQuote($includeQuote);
-
-    $content = new ContentItem();
-    $content->setType('text/plain');
-    $content->setValue($string);
-
     // Run request
-    $response = $dlp->inspectContent($inspectConfig, [$content]);
-
-    $likelihoods = ['Unknown', 'Very unlikely', 'Unlikely', 'Possible',
-                    'Likely', 'Very likely'];
+    $response = $dlp->listInfoTypes($category, $languageCode);
 
     // Print the results
-    print('Findings:' . PHP_EOL);
-    foreach ($response->getResults()[0]->getFindings() as $finding) {
-        if ($includeQuote) {
-            print('  Quote: ' . $finding->getQuote() . PHP_EOL);
-        }
-        print('  Info type: ' . $finding->getInfoType()->getName() . PHP_EOL);
-        $likelihoodString = $likelihoods[$finding->getLikelihood()];
-        print('  Likelihood: ' . $likelihoodString . PHP_EOL);
+    print('Info Types:' . PHP_EOL);
+    foreach ($response->getInfoTypes() as $infoType) {
+        printf('  %s (%s)' . PHP_EOL,
+            $infoType->getDisplayName(),
+            $infoType->getName());
     }
 }
 # [END list_info_types]

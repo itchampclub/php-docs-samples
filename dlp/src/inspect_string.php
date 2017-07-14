@@ -25,10 +25,9 @@ use Google\Privacy\Dlp\V2beta1\InspectConfig;
 use Google\Privacy\Dlp\V2beta1\Likelihood;
 
 /**
- * Finds shot changes in the video.
+ * Inspect a string using the Data Loss Prevention (DLP) API.
  *
- * @param string $uri The cloud storage object to analyze. Must be formatted
- *                    like gs://bucketname/objectname
+ * @param string $string The text to inspect
  */
 function inspect_string(
     $string,
@@ -50,7 +49,7 @@ function inspect_string(
 
     // Create the configuration object
     $inspectConfig = new InspectConfig();
-    // $inspectConfig->setMinLikelihood($minLikelihood);
+    $inspectConfig->setMinLikelihood($minLikelihood);
     $inspectConfig->setMaxFindings($maxFindings);
     $inspectConfig->setInfoTypes($infoTypes);
     $inspectConfig->setIncludeQuote($includeQuote);
@@ -66,14 +65,19 @@ function inspect_string(
                     'Likely', 'Very likely'];
 
     // Print the results
-    print('Findings:' . PHP_EOL);
-    foreach ($response->getResults()[0]->getFindings() as $finding) {
-        if ($includeQuote) {
-            print('  Quote: ' . $finding->getQuote() . PHP_EOL);
+    $findings = $response->getResults()[0]->getFindings();
+    if (count($findings) == 0) {
+        print('No findings.' . PHP_EOL);
+    } else {
+        print('Findings:' . PHP_EOL);
+        foreach ($findings as $finding) {
+            if ($includeQuote) {
+                print('  Quote: ' . $finding->getQuote() . PHP_EOL);
+            }
+            print('  Info type: ' . $finding->getInfoType()->getName() . PHP_EOL);
+            $likelihoodString = $likelihoods[$finding->getLikelihood()];
+            print('  Likelihood: ' . $likelihoodString . PHP_EOL);
         }
-        print('  Info type: ' . $finding->getInfoType()->getName() . PHP_EOL);
-        $likelihoodString = $likelihoods[$finding->getLikelihood()];
-        print('  Likelihood: ' . $likelihoodString . PHP_EOL);
     }
 }
 # [END inspect_string]

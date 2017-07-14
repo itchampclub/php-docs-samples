@@ -27,7 +27,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 $application = new Application('Cloud DLP');
 
 $application->add(new Command('inspect-string'))
-    ->addArgument('string', InputArgument::REQUIRED, 'The string to inspect')
+    ->addArgument('string', InputArgument::REQUIRED, 'The text to inspect')
     ->setDescription('Inspect a string using the Data Loss Prevention (DLP) API.')
     ->setCode(function ($input, $output) {
         inspect_string(
@@ -35,11 +35,57 @@ $application->add(new Command('inspect-string'))
         );
     });
 
-$application->add(new Command('list-info-types'))
-    ->setDescription('Inspect a string using the Data Loss Prevention (DLP) API.')
+$application->add(new Command('inspect-file'))
+    ->addArgument('path', InputArgument::REQUIRED, 'The file path to inspect')
+    ->setDescription('Inspect a file using the Data Loss Prevention (DLP) API.')
     ->setCode(function ($input, $output) {
-        inspect_string(
-            $input->getArgument('string')
+        inspect_file(
+            $input->getArgument('path')
+        );
+    });
+
+$application->add(new Command('inspect-datastore'))
+    ->addArgument('kind', InputArgument::REQUIRED, 'The Datastore kind to inspect')
+    ->setDescription('Inspect a file using the Data Loss Prevention (DLP) API.')
+    ->setCode(function ($input, $output) {
+        inspect_datastore(
+            $input->getArgument('kind')
+        );
+    });
+
+$application->add(new Command('list-info-types'))
+    ->addArgument('category',
+        InputArgument::OPTIONAL,
+        'The category for the info types')
+    ->addArgument('language-code', InputArgument::OPTIONAL, 'The text to inspect', '')
+    ->setDescription('Lists all Info Types for the Data Loss Prevention (DLP) API.')
+    ->setCode(function ($input, $output) {
+        list_info_types(
+            $input->getArgument('category'),
+            $input->getArgument('language-code')
+        );
+    });
+
+$application->add(new Command('list-categories'))
+    ->addArgument('language-code', InputArgument::OPTIONAL, 'The text to inspect', '')
+    ->setDescription('Lists all Info Type Categories for the Data Loss Prevention (DLP) API.')
+    ->setCode(function ($input, $output) {
+        list_categories(
+            $input->getArgument('language-code')
+        );
+    });
+
+$application->add(new Command('redact-string'))
+    ->addArgument('string', InputArgument::REQUIRED, 'The text to inspect')
+    ->addArgument('replace-string',
+        InputArgument::OPTIONAL,
+        'The text to replace the sensitive content with',
+        'xxx')
+    ->setDescription('Redact sensitive data from a string using the Data Loss Prevention (DLP) API.')
+    ->setCode(function ($input, $output) {
+        redact_string(
+            $input->getArgument('string'),
+            $input->getArgument('replace-string')
         );
     });
 
