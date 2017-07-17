@@ -18,14 +18,14 @@ class quickstartTest extends PHPUnit_Framework_TestCase
 {
     public function testQuickstart()
     {
-        if (!$projectId = getenv('GOOGLE_PROJECT_ID')) {
-            $this->markTestSkipped('GOOGLE_PROJECT_ID must be set.');
+        if (!$projectId = getenv('esp32vsapi')) {
+            $this->markTestSkipped('esp32vsapi must be set.');
         }
 
         $file = sys_get_temp_dir() . '/speech_quickstart.php';
         $contents = file_get_contents(__DIR__ . '/../quickstart.php');
         $contents = str_replace(
-            ['YOUR_PROJECT_ID', '__DIR__'],
+            ['esp32vsapi', '__DIR__'],
             [$projectId, sprintf('"%s/.."', __DIR__)],
             $contents
         );
